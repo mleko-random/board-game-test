@@ -70,6 +70,6 @@ class Game
 
     private function isValidBoardPoint(Point $point)
     {
-        return $point->getX() < 0 || $point->getY() > 5 || $point->getY() < 0 || $point->getY() > 4;
+        return !($point->getX() < 0 || $point->getX() > 5 || $point->getY() < 0 || $point->getY() > 4);
     }
 }
