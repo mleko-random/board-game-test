@@ -7,6 +7,11 @@
 namespace Mleko\BoardGame;
 
 
+use Mleko\BoardGame\Exception\DuplicateShot;
+use Mleko\BoardGame\Exception\OutOfTime;
+use Mleko\BoardGame\Exception\PointOutOfBoard;
+use Mleko\BoardGame\Exception\TooManyShots;
+
 class Game
 {
     const TIMEOUT = 60;
@@ -28,7 +33,7 @@ class Game
     public function __construct(Point $winningPoint, $startTimestamp)
     {
         if (!$this->isValidBoardPoint($winningPoint)) {
-            throw new \RuntimeException();
+            throw new PointOutOfBoard();
         }
         $this->winningPoint = $winningPoint;
         $this->startTimestamp = $startTimestamp;
@@ -42,20 +47,20 @@ class Game
     public function checkShot(Shot $shot)
     {
         if (!$this->isValidBoardPoint($shot->getPoint())) {
-            throw new \RuntimeException();
+            throw new PointOutOfBoard();
         }
 
         if (count($this->checkedPoints) >= 5) {
-            throw new \RuntimeException();
+            throw new TooManyShots();
         }
 
         if ($shot->getTimestamp() - $this->startTimestamp > self::TIMEOUT) {
-            throw new \RuntimeException();
+            throw new OutOfTime();
         }
 
         foreach ($this->checkedPoints as $point) {
             if ($point->equals($shot->getPoint())) {
-                throw new \RuntimeException();
+                throw new DuplicateShot();
             }
         }
 
@@ -70,6 +75,6 @@ class Game
 
     private function isValidBoardPoint(Point $point)
     {
-        return !($point->getX() < 0 || $point->getX() > 5 || $point->getY() < 0 || $point->getY() > 4);
+        return !($point->getX() < 0 || $point->getX() >= 5 || $point->getY() < 0 || $point->getY() >= 4);
     }
 }
