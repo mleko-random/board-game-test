@@ -73,7 +73,11 @@ class Game
         return false;
     }
 
-    private function isValidBoardPoint(Point $point)
+    /**
+     * @param Point $point
+     * @return bool
+     */
+    public function isValidBoardPoint(Point $point)
     {
         return !($point->getX() < 0 || $point->getX() >= 5 || $point->getY() < 0 || $point->getY() >= 4);
     }

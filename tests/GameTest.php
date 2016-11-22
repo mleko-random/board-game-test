@@ -30,7 +30,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
 
     public function testWin()
     {
-        $this->assertTrue($this->game->checkShot(new Shot(new Point(2, 2), 1002)));
+        $this->assertTrue($this->game->checkShot(new Shot(new Point(2, 2), 1060)));
     }
 
     public function testMiss()
@@ -41,7 +41,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
     public function testTimeout()
     {
         $this->expectException(OutOfTime::class);
-        $this->assertTrue($this->game->checkShot(new Shot(new Point(2, 2), 2000)));
+        $this->assertTrue($this->game->checkShot(new Shot(new Point(2, 2), 1061)));
     }
 
     public function testDuplicateShot()
@@ -66,6 +66,26 @@ class GameTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectException(PointOutOfBoard::class);
         $this->game->checkShot(new Shot(new Point(10, 2), 1001));
+    }
+
+
+    public function pointValidationDataProvider()
+    {
+        return [
+            [-1, 1, false],
+            [1, -1, false],
+            [5, 1, false],
+            [1, 4, false],
+            [2, 1, true],
+            [0, 0, true],
+            [4, 3, true]
+        ];
+    }
+
+    /** @dataProvider pointValidationDataProvider */
+    public function testPointValidator($x, $y, $expected)
+    {
+        $this->assertEquals($expected, $this->game->isValidBoardPoint(new Point($x, $y)));
     }
 
     public function setUp()
