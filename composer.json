@@ -1,0 +1,16 @@
+{
+    "name": "mleko/board-game",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Daniel Król",
+            "email": "daniel@krol.me"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "psr-4":{
+            "Mleko\\BoardGame\\": "src"
+        }
+    }
+}
